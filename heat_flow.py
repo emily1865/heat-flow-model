@@ -74,9 +74,9 @@ def form_problem_cartesian(**kwargs):
     mesh = ufl.domain.extract_unique_domain(T)
     n = firedrake.FacetNormal(mesh)
 
-    F = ρ * c * T * u - k * grad(T)
-    eqn = (ρ * c * Dt(T) * φ - inner(F, grad(φ)) - q * φ) * dx
-    top_bottom_bcs = q_s * φ * ds((4,)) + q_b * φ * ds((3,))
-    inflow_bc = ρ * c * T_in * min_value(0, inner(u, n)) * φ * ds
-    outflow_bc = ρ * c * T * max_value(0, inner(u, n)) * φ * ds
-    return eqn + inflow_bc + outflow_bc - top_bottom_bcs
+    F = ρ * c * T * u - k*grad(T) # this would be the "volumetric heat source" - in our case, this would be area heat source?
+    eqn = (ρ * c * Dt(T) * φ - inner(F, grad(φ)) - q * φ) * dx # this would be ??? first law of thermodynamics
+    top_bottom_bcs = q_s * φ * ds((4,)) + q_b * φ * ds((3,)) # none of the changes I am making here will stick probably
+    inflow_bc = ρ * c * T_in * min_value(0, inner(u, n)) * φ * ds() # T should actually be T_in here
+    outflow_bc = ρ * c * T * max_value(0, inner(u, n)) * φ * ds() # hello ???? hello hello
+    return eqn + inflow_bc + outflow_bc - top_bottom_bcs # girl HELP
